@@ -27,6 +27,7 @@ func ParseQuotes(filename string) ([]string, error) {
 
 func CheermeupHandler(update tgbotapi.Update, bot *tgbotapi.BotAPI, quotes []string) {
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, getQuote(quotes))
+	msg.ParseMode = "markdown"
 	bot.Send(msg)
 }
 

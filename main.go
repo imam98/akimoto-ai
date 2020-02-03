@@ -44,15 +44,15 @@ func main() {
 				} else {
 					msg.Text = "You've already asked that a moment ago, please be kind and send me your location so I can start my work 😇"
 				}
+				bot.Send(msg)
 			case "help":
 				handlers.HelpHandler(update, bot)
 			case "cheermeup":
 				handlers.CheermeupHandler(update, bot, quotes)
 			default:
 				msg.Text = "Sorry, I don't acknowledge that command. Please try another one."
+				bot.Send(msg)
 			}
-
-			bot.Send(msg)
 		} else {
 			if isAskingWeather {
 				if loc := update.Message.Location; loc != nil {
