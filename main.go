@@ -26,7 +26,7 @@ func main() {
 		log.Fatalln("Error parsing file:", err.Error())
 	}
 
-	mux.HandleCommand("help", handlers.HelpHandler)
+	mux.Handle("help", handlers.HelpHandler)
 	mux.Serve(u)
 
 	// updates, err := bot.GetUpdatesChan(u)

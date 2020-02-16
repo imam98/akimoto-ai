@@ -29,7 +29,7 @@ func NewCommandRouter(token string, debugMode bool) (Multiplexer, error) {
 	return mux, nil
 }
 
-func (mux *Multiplexer) HandleCommand(command string, handler Handler) {
+func (mux *Multiplexer) Handle(command string, handler Handler) {
 	mux.routes[command] = handler
 }
 
