@@ -6,7 +6,7 @@ import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-func HelpHandler(update tgbotapi.Update, bot *tgbotapi.BotAPI) {
+func HelpHandler(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	arg := update.Message.CommandArguments()
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 

@@ -11,7 +11,7 @@ type Multiplexer struct {
 	routes map[string]Handler
 }
 
-type Handler func(update tgbotapi.Update, bot *tgbotapi.BotAPI)
+type Handler func(bot *tgbotapi.BotAPI, update tgbotapi.Update)
 
 func NewCommandRouter(token string, debugMode bool) (Multiplexer, error) {
 	bot, err := tgbotapi.NewBotAPI(token)
@@ -45,8 +45,8 @@ func (mux *Multiplexer) Serve(updateConfig tgbotapi.UpdateConfig) error {
 		}
 
 		if update.Message.IsCommand() {
-			if handler, ok := mux.routes[update.Message.Command()]; ok {
-				handler(update, mux.bot)
+			if handle, ok := mux.routes[update.Message.Command()]; ok {
+				handle(mux.bot, update)
 			} else {
 				id := update.Message.Chat.ID
 				msg := tgbotapi.NewMessage(id, "Sorry, I don't acknowledge that command. Please try another one.")
