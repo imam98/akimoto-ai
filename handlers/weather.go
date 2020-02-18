@@ -27,7 +27,7 @@ func WeatherReportHandler(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	bot.Send(msg)
 }
 
-func GenWeatherMsg(loc *tgbotapi.Location) string {
+func genWeatherMsg(loc *tgbotapi.Location) string {
 	report, err := requestWeatherReport(loc.Latitude, loc.Longitude)
 	if err != nil {
 		return err.Error()

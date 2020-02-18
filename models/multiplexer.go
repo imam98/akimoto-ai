@@ -7,8 +7,9 @@ import (
 )
 
 type Multiplexer struct {
-	bot    *tgbotapi.BotAPI
-	routes map[string]Handler
+	bot                *tgbotapi.BotAPI
+	routes             map[string]Handler
+	LocationMsgHandler Handler
 }
 
 type Handler func(bot *tgbotapi.BotAPI, update tgbotapi.Update)
@@ -46,14 +47,16 @@ func (mux *Multiplexer) Serve(updateConfig tgbotapi.UpdateConfig) error {
 
 		if update.Message.IsCommand() {
 			if handle, ok := mux.routes[update.Message.Command()]; ok {
-				handle(mux.bot, update)
+				go handle(mux.bot, update)
 			} else {
 				id := update.Message.Chat.ID
 				msg := tgbotapi.NewMessage(id, "Sorry, I don't acknowledge that command. Please try another one.")
 				mux.bot.Send(msg)
 			}
 		} else {
-			// Do Something
+			if update.Message.Location != nil {
+				go mux.LocationMsgHandler(mux.bot, update)
+			}
 		}
 	}
 
