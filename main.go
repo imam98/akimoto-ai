@@ -28,6 +28,7 @@ func main() {
 
 	mux.Handle("help", handlers.HelpHandler)
 	mux.Handle("cheermeup", handlers.CheermeupHandler)
+	mux.Handle("weather", handlers.WeatherReportHandler)
 	mux.Serve(u)
 
 	// updates, err := bot.GetUpdatesChan(u)

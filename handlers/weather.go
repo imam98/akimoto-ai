@@ -12,7 +12,20 @@ import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 
 	"imam.miniproject/akimoto-ai/models"
+	"imam.miniproject/akimoto-ai/storage"
 )
+
+func WeatherReportHandler(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+	user := storage.GetUser(update.Message.Chat.ID)
+	if !user.IsAskingWeather {
+		msg.Text = "Alright I'm gonna process the data after you tell me your location"
+		user.IsAskingWeather = true
+	} else {
+		msg.Text = "You've already asked that a moment ago, please be kind and send me your location so I can start my work 😇"
+	}
+	bot.Send(msg)
+}
 
 func GenWeatherMsg(loc *tgbotapi.Location) string {
 	report, err := requestWeatherReport(loc.Latitude, loc.Longitude)

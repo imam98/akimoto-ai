@@ -52,6 +52,8 @@ func (mux *Multiplexer) Serve(updateConfig tgbotapi.UpdateConfig) error {
 				msg := tgbotapi.NewMessage(id, "Sorry, I don't acknowledge that command. Please try another one.")
 				mux.bot.Send(msg)
 			}
+		} else {
+			// Do Something
 		}
 	}
 
