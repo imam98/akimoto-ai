@@ -29,6 +29,7 @@ func main() {
 	mux.Handle("help", handlers.HelpHandler)
 	mux.Handle("cheermeup", handlers.CheermeupHandler)
 	mux.Handle("weather", handlers.WeatherReportHandler)
+	mux.Handle("define", handlers.DefinitionHandler)
 	mux.LocationMsgHandler = handlers.LocationHandler
 	mux.Serve(u)
 }
