@@ -17,6 +17,13 @@ func DefinitionHandler(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	word := update.Message.CommandArguments()
 	result, err := requestDefinition(word)
 	if err != nil {
+		if err.Error() == "404" {
+			msgText := fmt.Sprintf("The definition of %v is not found in my dictionary", word)
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, msgText)
+			bot.Send(msg)
+			return
+		}
+
 		log.Fatalln(err)
 	}
 
@@ -26,7 +33,7 @@ func DefinitionHandler(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 		if index == 3 {
 			break
 		}
-		
+
 		val.LexicalCategory.Text = strings.ToLower(val.LexicalCategory.Text)
 		if err := tpl.Execute(sb, val); err != nil {
 			log.Fatalln(err.Error())
@@ -61,6 +68,10 @@ func requestDefinition(word string) (models.DictionaryEntry, error) {
 		return models.DictionaryEntry{}, err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode == http.StatusNotFound {
+		return models.DictionaryEntry{}, fmt.Errorf("%v", http.StatusNotFound)
+	}
 
 	var data models.DictionaryEntry
 	if err := json.NewDecoder(response.Body).Decode(&data); err != nil {
