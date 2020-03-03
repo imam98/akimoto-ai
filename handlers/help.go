@@ -44,7 +44,7 @@ func HelpHandler(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	default:
 		msg.Text = "I'm sorry, I don't think that I recognized that command"
 		bot.Send(msg)
-		msg.Text = "If you confused about the usage of help command, I suggest you to type /help help"
+		msg.Text = "If you are confused about the usage of help command, I suggest you to type /help help"
 	}
 
 	bot.Send(msg)
